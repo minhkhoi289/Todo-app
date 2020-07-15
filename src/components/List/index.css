@@ -1,0 +1,10 @@
+.list-container {
+  background: white;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 15px auto;
+  overflow: hidden;
+  width: 50%;
+  margin: auto;
+  margin-top: 20px;
+}
