@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ActionBar from './components/ActionBar';
 import List from './components/List';
+import AddForm from './components/AddForm';
 
 const fakeData = [
-  { id: 1, name: 'day la so 1', completed: true },
-  { id: 2, name: 'day la so 2', completed: true },
-  { id: 3, name: 'day la so 3', completed: true }
+  { id: 1, name: 'Todo 1', completed: true },
+  { id: 2, name: 'Todo 2', completed: true },
+  { id: 3, name: 'Todo 3', completed: false }
 ]
 
 class App extends Component {
@@ -15,7 +15,8 @@ class App extends Component {
     super(props)
 
     this.state = {
-      todos: fakeData
+      todos: fakeData,
+      filter: 'all',
     };
   }
 
@@ -32,6 +33,12 @@ class App extends Component {
     this.setState({ todos });
   }
 
+  handleRemoveTodo = (id) => {
+    let { todos } = this.state;
+    todos = todos.filter((todo) => todo.id !== id);
+    this.setState({ todos })
+  }
+
   onToggleTodo = (id) => {
     let { todos } = this.state;
     todos = todos.map((todo) =>
@@ -41,8 +48,28 @@ class App extends Component {
     this.setState({ todos });
   }
 
+  handleFilter = (status) => {
+    this.setState({
+      filter: status
+    });
+  }
+
+  filterTodo = () => {
+    const { todos, filter } = this.state;
+
+    if (filter === 'all') return todos;
+    if (filter === 'active') return todos.filter((todo) => todo.completed === false);
+    if (filter === 'complete') return todos.filter((todo) => todo.completed === true);
+  }
+
+  deleteAll = () => {
+    this.setState({
+      todos: []
+    });
+  }
+
   render() {
-    const { todos } = this.state;
+    const { todos, filter } = this.state;
 
     return (
       <div className='container'>
@@ -50,8 +77,15 @@ class App extends Component {
           handleNewTodo={this.handleNewTodo}
         />
         <List
-          todos={todos}
+          todos={this.filterTodo()}
           onToggleTodo={this.onToggleTodo}
+          onRemoveTodo={this.handleRemoveTodo}
+        />
+        <AddForm
+          todolength={todos.length}
+          handleFilter={this.handleFilter}
+          filter={filter}
+          clearTodo={this.deleteAll}
         />
       </div>
     )

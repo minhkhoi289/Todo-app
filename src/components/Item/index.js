@@ -15,6 +15,13 @@ class Item extends Component {
     onToggleTodo();
   };
 
+  handleDelete = (e) => {
+    e.preventDefault();
+    const { onRemoveTodo } = this.props;
+
+    onRemoveTodo();
+  }
+
   render() {
     const {
       data: {
@@ -24,7 +31,7 @@ class Item extends Component {
     } = this.props;
 
     return (
-      <div className='.item-container'>
+      <div className='item-container'>
         <a className='item-toggle' onClick={this.handleToggle}>
           {completed && <img src={greenTickIcon} alt='tick' />}
           {!completed && <img src={blackTickIcon} alt='tick' />}
@@ -36,7 +43,7 @@ class Item extends Component {
           <a className='icon-btn'>
             <img src={editIcon} alt='edit' />
           </a>
-          <a className='icon-btn'>
+          <a className='icon-btn' onClick={this.handleDelete}>
             <img src={deleteIcon} alt='close' />
           </a>
         </div>
